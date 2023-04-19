@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.15.31.15270",
-      "templateHash": "9517006300944826061"
+      "version": "0.16.1.55165",
+      "templateHash": "9573390974785956912"
     }
   },
   "parameters": {
@@ -157,7 +157,7 @@
       "properties": {
         "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('pgRoleId'))]",
         "description": "pgaas",
-        "principalId": "[format('{0}', reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('{0}mi', uniqueString(resourceGroup().id)))).principalId)]",
+        "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('{0}mi', uniqueString(resourceGroup().id))), '2022-01-31-preview').principalId]",
         "principalType": "ServicePrincipal"
       },
       "dependsOn": [
@@ -197,7 +197,7 @@
       },
       "type": "Microsoft.DBforPostgreSQL/flexibleServers/firewallRules",
       "apiVersion": "2022-01-20-preview",
-      "name": "[format('{0}/{1}', format('{0}pfs', uniqueString(resourceGroup().id)), variables('firewallrules')[copyIndex()].Name)]",
+      "name": "[format('{0}/{1}', format('{0}pfs', uniqueString(resourceGroup().id)), format('{0}', variables('firewallrules')[copyIndex()].Name))]",
       "properties": {
         "startIpAddress": "[variables('firewallrules')[copyIndex()].StartIpAddress]",
         "endIpAddress": "[variables('firewallrules')[copyIndex()].EndIpAddress]"
@@ -224,7 +224,7 @@
         "containerSettings": {
           "containerGroupName": "[format('{0}ci1', uniqueString(resourceGroup().id))]"
         },
-        "primaryScriptUri": "https://raw.githubusercontent.com/caleteeter/pg-test/main/scripts/deploy.sh",
+        "primaryScriptUri": "https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/scripts/deploy.sh",
         "timeout": "PT30M",
         "cleanupPreference": "OnSuccess",
         "azCliVersion": "2.28.0",
