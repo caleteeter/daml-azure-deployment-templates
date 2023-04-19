@@ -1,12 +1,5 @@
 -- Postgres bootstrap - For automation/testing purposes only!
 
--- Default admin database
-
-REVOKE ALL ON DATABASE postgres FROM public;
-\c postgres
-REVOKE ALL ON schema public FROM public;
-ALTER SCHEMA public OWNER TO postgres;
-
 -- Canton domain and participants user and databases
 
 CREATE ROLE domain WITH PASSWORD 'umn2uAR3byW4uDERUWD4s19RebC6eb2_pr6eCmfa' LOGIN;
