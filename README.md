@@ -1,1 +1,1 @@
-# Daml Azure Deployment Templates
+# Daml Azure Deployment Template
