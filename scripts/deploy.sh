@@ -98,7 +98,7 @@ kubectl -n canton create secret docker-registry "${k8s_secret_name}" \
 kubectl -n canton patch serviceaccount default -p "{\"imagePullSecrets\": [{\"name\": \"${k8s_secret_name}\"}]}"
 
 # install helm
-https://get.helm.sh/helm-v3.11.2-linux-amd64.tar.gz
+wget https://get.helm.sh/helm-v3.11.2-linux-amd64.tar.gz
 tar -zxvf helm-v3.11.2-linux-amd64.tar.gz
 cp linux-amd64/helm /usr/local/bin
 
