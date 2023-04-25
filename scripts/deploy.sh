@@ -37,8 +37,8 @@ wget -O postgresql.sql https://raw.githubusercontent.com/caleteeter/daml-azure-d
 
 # update tokens in script with real values
 dbPass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
-sed -i "s/DB_PASS/${dbPass}/g" postgresql.sql
-sed -i "s/DB_ADMIN/${administratorLogin}/g" postgresql.sql
+# sed -i "s/DB_PASS/${dbPass}/g" postgresql.sql
+# sed -i "s/DB_ADMIN/${administratorLogin}/g" postgresql.sql
 
 # psql "host=${serverName}.postgres.database.azure.com port=5432 dbname=postgres user=${administratorLogin} password=${administratorLoginPassword} sslmode=require" -a -f "postgresql.sql"
 
