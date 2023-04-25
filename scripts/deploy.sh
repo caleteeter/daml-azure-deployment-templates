@@ -27,13 +27,13 @@ az acr import --name "${acrName}" --source "digitalasset-${company}-docker.jfrog
 az acr import --name "${acrName}" --source "digitalasset-${company}-docker.jfrog.io/oauth2-middleware:${version}" --username "${username}" --password "${password}"
 
 # ensure the preview bits can be used with prompt in UI
-# az config set extension.use_dynamic_install=yes_without_prompt
+az config set extension.use_dynamic_install=yes_without_prompt
 
 # install the psql client
-# apk --no-cache add postgresql-client
+apk --no-cache add postgresql-client
 
 # create database objects
-# wget "https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/assets/postgresql.sql"
+wget -O postgresql.sql https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/assets/postgresql.sql
 
 # update tokens in script with real values
 # dbPass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
