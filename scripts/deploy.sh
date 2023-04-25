@@ -18,27 +18,27 @@ az login --identity --username "${managedIdentity}"
 
 # get credentials for kubectl used for data plane operations
 az aks install-cli
-az aks get-credentials --name "${aksClusterName}" --resource-group "${resourceGroupName}"
+# az aks get-credentials --name "${aksClusterName}" --resource-group "${resourceGroupName}"
 
 # replicate images from customer Digital Asset repos
-az acr import --name "${acrName}" --source "digitalasset-${company}-docker.jfrog.io/canton-enterprise:${version}" --username "${username}" --password "${password}"
-az acr import --name "${acrName}" --source "digitalasset-${company}-docker.jfrog.io/http-json:${version}"         --username "${username}" --password "${password}"
-az acr import --name "${acrName}" --source "digitalasset-${company}-docker.jfrog.io/trigger-service:${version}"   --username "${username}" --password "${password}"
-az acr import --name "${acrName}" --source "digitalasset-${company}-docker.jfrog.io/oauth2-middleware:${version}" --username "${username}" --password "${password}"
+# az acr import --name "${acrName}" --source "digitalasset-${company}-docker.jfrog.io/canton-enterprise:${version}" --username "${username}" --password "${password}"
+# az acr import --name "${acrName}" --source "digitalasset-${company}-docker.jfrog.io/http-json:${version}"         --username "${username}" --password "${password}"
+# az acr import --name "${acrName}" --source "digitalasset-${company}-docker.jfrog.io/trigger-service:${version}"   --username "${username}" --password "${password}"
+# az acr import --name "${acrName}" --source "digitalasset-${company}-docker.jfrog.io/oauth2-middleware:${version}" --username "${username}" --password "${password}"
 
 # ensure the preview bits can be used with prompt in UI
-az config set extension.use_dynamic_install=yes_without_prompt
+# az config set extension.use_dynamic_install=yes_without_prompt
 
 # install the psql client
-apk --no-cache add postgresql-client
+# apk --no-cache add postgresql-client
 
 # create database objects
-wget "https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/assets/postgresql.sql"
+# wget "https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/assets/postgresql.sql"
 
 # update tokens in script with real values
-dbPass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
-sed -i "s/DB_PASS/${dbPass}/g" postgresql.sql
-sed -i "s/DB_ADMIN/${administratorLogin}/g" postgresql.sql
+# dbPass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+# sed -i "s/DB_PASS/${dbPass}/g" postgresql.sql
+# sed -i "s/DB_ADMIN/${administratorLogin}/g" postgresql.sql
 
 # psql "host=${serverName}.postgres.database.azure.com port=5432 dbname=postgres user=${administratorLogin} password=${administratorLoginPassword} sslmode=require" -a -f "postgresql.sql"
 
