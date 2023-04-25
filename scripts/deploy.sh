@@ -43,7 +43,7 @@ psql "host=${serverName}.postgres.database.azure.com port=5432 dbname=postgres u
 
 # create resources in k8s
 kubectl create namespace canton
-kubectl -n canton create secret generic postgresql-roles --from-literal=domain='${dbPass}' --from-literal=json='${dbPass}' --from-literal=mediator='${dbPass}' --from-literal=participant1='${dbPass}' --from-literal=participant2='${dbPass}' --from-literal=sequencer='${dbPass}' --from-literal=trigger='${dbPass}'
+kubectl -n canton create secret generic postgresql-roles --from-literal=domain=${dbPass} --from-literal=json=${dbPass} --from-literal=mediator=${dbPass} --from-literal=participant1=${dbPass} --from-literal=participant2=${dbPass} --from-literal=sequencer=${dbPass} --from-literal=trigger=${dbPass}
 
 # allow to pull from ACR namespace wide
 acrPassword=$(az acr credential show --resource-group "${resourceGroupName}" --name "${acrName}" --query passwords[0].value --output tsv)
