@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.16.2.56959",
-      "templateHash": "18137345201149280314"
+      "templateHash": "10372305526763546422"
     }
   },
   "parameters": {
@@ -227,7 +227,7 @@
         "primaryScriptUri": "https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/scripts/deploy.sh",
         "timeout": "PT30M",
         "cleanupPreference": "OnSuccess",
-        "azCliVersion": "2.48.1",
+        "azCliVersion": "2.45.0",
         "retentionInterval": "P1D"
       },
       "dependsOn": [
