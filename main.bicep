@@ -199,7 +199,7 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     primaryScriptUri: 'https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/scripts/deploy.sh'
     timeout: 'PT30M'
     cleanupPreference: 'OnSuccess'
-    azCliVersion: '2.48.1'
+    azCliVersion: '2.45.0'
     retentionInterval:'P1D'
   }
 }
