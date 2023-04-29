@@ -90,4 +90,5 @@ helm replace-values-env -f assets/values/registries/azure.yaml -U
 helm replace-values-env -f assets/values/common/storage.yaml -U
 
 # deployment
-helmfile -f assets/helmfile.yaml -l 'default=true' apply --skip-deps
+cd assets/
+helmfile -f helmfile.yaml -l 'default=true' apply --skip-deps
