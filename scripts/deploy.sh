@@ -64,24 +64,30 @@ cp helmfile /usr/local/bin
 # install plugin for helm replace
 helm plugin install https://github.com/infog/helm-replace-values-env
 
-# patch helm files
-# export REPOSITORY=$acrName.azurecr.io/canton-enterprise
-# helm replace-values-env -f values/aks/canton.yaml -u
-# helm replace-values-env -f values/aks/participant1.yaml -u
-# helm replace-values-env -f values/aks/participant2.yaml -u
-# helm replace-values-env -f values/aks/canton.yaml -u
+# pull the helm charts
+helm repo add canton https://digital-asset.github.io/daml-helm-charts
+helm pull canton/canton-domain
+helm pull canton/canton-participant
+helm pull canton/daml-http-json
+helm pull canton/daml-trigger
 
-# export REPOSITORY=$acrName.azurecr.io/http-json
-# helm replace-values-env -f values/aks/http-json.yaml -u
+# extract helm charts
+mkdir charts
+tar -zxvf canton-domain-0.0.8.tgz -C charts/
+tar -zxvf canton-participant-0.0.8.tgz -C charts/
+tar -zxvf daml-trigger-0.0.8.tgz -C charts/
+tar -zxvf daml-http-json-0.0.8.tgz -C charts/
 
-# export REPOSITORY=$acrName.azurecr.io/trigger-service
-# helm replace-values-env -f values/aks/trigger.yaml -u
+# extract helm chart values
+wget -O postgresql.sql https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/assets/assets.tar.gz
+mkdir assets
+tar -zxvf assets.tar.gz -C assets
 
-# export REPOSITORY=$acrName.azurecr.io/daml-sdk
-# helm replace-values-env -f values/aks/navigator.yaml -u
-
-# export HOST=${serverName}.postgres.database.azure.com
-# helm replace-values-env -f values/aks/storage.yaml -u
+# patch dynamic values for helm
+export REGISTRY=${acrName}.azurecr.io
+export PGHOST=${serverName}.postgres.database.azure.com
+helm replace-values-env -f assets/values/registries/azure.yaml -U
+helm replace-values-env -f assets/values/common/storage.yaml -U
 
 # deployment
-# helmfile -f .\helmfile.aks.yaml -l 'default=true' apply --skip-deps
+helmfile -f .\helmfile.yaml -l 'default=true' apply --skip-deps
