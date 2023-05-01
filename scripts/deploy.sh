@@ -62,6 +62,7 @@ tar -zxvf helmfile_0.151.0_linux_amd64.tar.gz
 cp helmfile /usr/local/bin
 
 # install plugin for helm replace
+helm plugin install https://github.com/databus23/helm-diff
 helm plugin install https://github.com/infog/helm-replace-values-env
 
 # pull the helm charts
