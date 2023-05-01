@@ -87,8 +87,8 @@ tar -zxvf assets.tar.gz -C assets
 # patch dynamic values for helm
 export REGISTRY=${acrName}.azurecr.io
 export PGHOST=${serverName}.postgres.database.azure.com
-helm replace-values-env -f assets/values/registries/azure.yaml -U
-helm replace-values-env -f assets/values/common/storage.yaml -U
+helm replace-values-env -f assets/values/registries/azure.yaml -u
+helm replace-values-env -f assets/values/common/storage.yaml -u
 
 # deployment
 cd assets/
