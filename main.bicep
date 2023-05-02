@@ -114,7 +114,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-05-02-preview' = {
     agentPoolProfiles: [
       {
         name: 'agentpool'
-        count: 1
+        count: 3
         vmSize: 'Standard_D4s_v4'
         mode: 'System'
         vnetSubnetID: resourceId('Microsoft.Network/virtualNetworks/subnets/', vnet.name, 'akssubnet')
