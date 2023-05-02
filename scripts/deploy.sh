@@ -81,14 +81,13 @@ tar -zxvf daml-http-json-0.0.8.tgz -C charts/
 
 # extract helm chart values
 wget -O assets.tar.gz https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/assets/assets.tar.gz
-mkdir assets
-tar -zxvf assets.tar.gz -C assets
+tar -zxvf assets.tar.gz
 
 # patch dynamic values for helm
 export REGISTRY=${acrName}.azurecr.io
 export HOST=${serverName}.postgres.database.azure.com
-helm replace-values-env -f assets/values/registries/azure.yaml -u
-helm replace-values-env -f assets/values/common/storage.yaml -u
+helm replace-values-env -f values/registries/azure.yaml -u
+helm replace-values-env -f values/common/storage.yaml -u
 
 # deployment
 cd assets/
