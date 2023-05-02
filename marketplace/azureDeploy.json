@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.16.2.56959",
-      "templateHash": "10372305526763546422"
+      "templateHash": "13055998632939933918"
     }
   },
   "parameters": {
@@ -132,7 +132,7 @@
         "agentPoolProfiles": [
           {
             "name": "agentpool",
-            "count": 1,
+            "count": 3,
             "vmSize": "Standard_D4s_v4",
             "mode": "System",
             "vnetSubnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', uniqueString(resourceGroup().id), 'akssubnet')]"
