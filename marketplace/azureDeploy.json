@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.16.2.56959",
-      "templateHash": "13055998632939933918"
+      "templateHash": "8677539864949099910"
     }
   },
   "parameters": {
@@ -77,6 +77,33 @@
     ]
   },
   "resources": [
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2023-02-01",
+      "name": "[format('a{0}akv', uniqueString(resourceGroup().id))]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "tenantId": "[tenant().tenantId]",
+        "sku": {
+          "family": "A",
+          "name": "standard"
+        },
+        "accessPolicies": [
+          {
+            "objectId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('{0}mi', uniqueString(resourceGroup().id))), '2022-01-31-preview').principalId]",
+            "tenantId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('{0}mi', uniqueString(resourceGroup().id))), '2022-01-31-preview').tenantId]",
+            "permissions": {
+              "secrets": [
+                "all"
+              ]
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('{0}mi', uniqueString(resourceGroup().id)))]"
+      ]
+    },
     {
       "type": "Microsoft.ContainerRegistry/registries",
       "apiVersion": "2022-02-01-preview",
