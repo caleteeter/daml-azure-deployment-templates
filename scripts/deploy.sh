@@ -18,7 +18,7 @@ az login --identity --username "${managedIdentity}"
 
 # enable akv integration for aks
 az aks enable-addons --addons azure-keyvault-secrets-provider --name $aksClusterName --resource-group $resourceGroupName
-akvSecretClientId=$(az aks show -g $resourceGroupName -n $akvName --query addonProfiles.azureKeyvaultSecretsProvider.identity.clientId -o tsv)
+akvSecretClientId=$(az aks show -g $resourceGroupName -n $aksClusterName --query addonProfiles.azureKeyvaultSecretsProvider.identity.clientId -o tsv)
 az keyvault set-policy -n $akvName --secret-permissions all --spn $akvSecretClientId
 
 # get credentials for kubectl used for data plane operations
