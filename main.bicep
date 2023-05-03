@@ -215,7 +215,7 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     }
   }
   properties: {
-    arguments: '${managedIdentity.id} ${resourceGroup().name} ${aks.name} ${acr.name} ${company} ${username} ${password} ${version} ${server.name} ${postgresAdminLogin} ${postgresAdminPassword}'
+    arguments: '${managedIdentity.id} ${resourceGroup().name} ${aks.name} ${acr.name} ${company} ${username} ${password} ${version} ${server.name} ${postgresAdminLogin} ${postgresAdminPassword} ${akv.name}'
     forceUpdateTag: '1'
     containerSettings:{
       containerGroupName: '${uniqueString(resourceGroup().id)}ci1'
