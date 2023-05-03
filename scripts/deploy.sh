@@ -15,6 +15,9 @@ administratorLoginPassword="${11}"
 # login
 az login --identity --username "${managedIdentity}"
 
+# enable akv integration for aks
+az aks enable-addons --addons azure-keyvault-secrets-provider --name $aksClusterName --resource-group $resourceGroupName
+
 # get credentials for kubectl used for data plane operations
 az aks install-cli
 az aks get-credentials --name "${aksClusterName}" --resource-group "${resourceGroupName}"

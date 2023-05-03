@@ -48,6 +48,30 @@ var firewallrules= [
   }
 ]
 
+// key vault for backing Kubernetes secrets
+resource akv 'Microsoft.KeyVault/vaults@2023-02-01' = {
+  name: 'a${uniqueString(resourceGroup().id)}akv'
+  location: location
+  properties: {
+    tenantId: tenant().tenantId
+    sku: {
+      family: 'A'
+      name: 'standard'
+    }
+    accessPolicies: [
+      {
+        objectId: managedIdentity.properties.principalId
+        tenantId: managedIdentity.properties.tenantId
+        permissions: {
+          secrets: [
+            'all'
+          ]
+        }
+      }
+    ]
+  }
+}
+
 // container registry for images/charts
 resource acr 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' = {
   name: '${uniqueString(resourceGroup().id)}acr'
