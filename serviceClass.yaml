@@ -1,0 +1,18 @@
+apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: azure-kvname-user-msi
+spec:
+  provider: azure
+  parameters:
+    usePodIdentity: "false"
+    useVMManagedIdentity: "true"
+    userAssignedIdentityID: "fc70cde7-5e06-4324-aac4-b51c495e8813"
+    keyvaultName: "ctdatestakv1"
+    objects: |
+      array:
+        - |
+          objectName: secret1
+          objectType: secret
+          objectVersion: ""
+    tenantId: "72f988bf-86f1-41af-91ab-2d7cd011db47"

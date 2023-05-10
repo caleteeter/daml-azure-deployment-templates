@@ -1,0 +1,5 @@
+---
+## Azure - Container Registry (ACR)
+image:
+  registry: "4frwuuzxqoobqacr.azurecr.io"
+  tag: "2.6.0"

@@ -1,0 +1,76 @@
+---
+bootstrap:
+  enabled: true
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+  environment:
+    JDK_JAVA_OPTIONS: "-XX:InitialRAMPercentage=70 -XX:MaxRAMPercentage=70"
+
+console:
+  enabled: true
+  resources:
+    requests:
+      cpu: 100m
+    limits:
+      cpu: 1
+      memory: 1Gi
+  environment:
+    JDK_JAVA_OPTIONS: "-XX:InitialRAMPercentage=70 -XX:MaxRAMPercentage=70"
+
+common:
+  features:
+    enablePreviewCommands: true
+    enableTestingCommands: true
+    enableRepairCommands: true
+  # Multi-participants
+  remoteParticipants:
+    - name: "participant1"
+      host: "participant1-canton-participant.canton.svc.cluster.local"
+    - name: "participant2"
+      host: "participant2-canton-participant.canton.svc.cluster.local"
+  environment:
+    JDK_JAVA_OPTIONS: "-XX:+ExitOnOutOfMemoryError -XX:InitialRAMPercentage=70 -XX:MaxRAMPercentage=70"
+
+manager:
+  storage:
+    database: "domain"
+    user: "domain"
+    existingSecret:
+      name: "postgresql-roles"
+      key: "domain"
+  resources:
+    requests:
+      cpu: 200m
+    limits:
+      cpu: 1
+      memory: 1Gi
+
+mediator:
+  storage:
+    database: "mediator"
+    user: "mediator"
+    existingSecret:
+      name: "postgresql-roles"
+      key: "mediator"
+  resources:
+    requests:
+      cpu: 200m
+    limits:
+      cpu: 1
+      memory: 1Gi
+
+sequencer:
+  storage:
+    database: "sequencer"
+    user: "sequencer"
+    existingSecret:
+      name: "postgresql-roles"
+      key: "sequencer"
+  resources:
+    requests:
+      cpu: 500m
+    limits:
+      cpu: 2
+      memory: 3Gi

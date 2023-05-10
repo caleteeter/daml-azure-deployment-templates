@@ -1,0 +1,9 @@
+---
+# Specific to canton and daml helm charts
+storage:
+  host: "4frwuuzxqoobqpfs.postgres.database.azure.com"
+  port: 5432
+  # Specific to domain and participant
+  ssl: false
+  # Specific to http-json and trigger
+  connectionProperties: "ssl=false"

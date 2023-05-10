@@ -1,0 +1,19 @@
+---
+participantName: "participant2"
+
+storage:
+  database: "participant2"
+  user: "participant2"
+  existingSecret:
+    name: "postgresql-roles"
+    key: "participant2"
+
+resources:
+  requests:
+    cpu: 500m
+  limits:
+    cpu: 2
+    memory: 3Gi
+
+environment:
+  JDK_JAVA_OPTIONS: "-XX:+ExitOnOutOfMemoryError -XX:InitialRAMPercentage=70 -XX:MaxRAMPercentage=70"

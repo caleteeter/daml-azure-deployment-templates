@@ -1,0 +1,79 @@
+---
+# Deploy all components
+# Two participants connected to the same domain
+# TLS/JWT disabled
+
+bases:
+  - helmDefaults.yaml
+  - environments.yaml
+
+releases:
+  - name: mydomain
+    namespace: canton
+    chart: charts/canton-domain
+    values:
+      - values/azure.yaml
+      - values/common.yaml
+      - values/storage.yaml
+      - values/domain.yaml
+    labels:
+      default: true
+      component: domain
+
+  - name: participant1
+    namespace: canton
+    chart: charts/canton-participant
+    values:
+      - values/azure.yaml
+      - values/common.yaml
+      - values/storage.yaml
+      - values/participant1.yaml
+    labels:
+      default: true
+      component: participant1
+
+  - name: participant2
+    namespace: canton
+    chart: charts/canton-participant
+    values:
+      - values/azure.yaml
+      - values/common.yaml
+      - values/storage.yaml
+      - values/participant2.yaml
+    labels:
+      default: true
+      component: participant2
+
+  - name: myjson
+    namespace: canton
+    chart: charts/daml-http-json
+    values:
+      - values/azure.yaml
+      - values/common.yaml
+      - values/storage.yaml
+      - values/http-json.yaml
+    labels:
+      default: true
+      component: http-json
+
+  - name: mytrigger
+    namespace: canton
+    chart: charts/daml-trigger
+    values:
+      - values/azure.yaml
+      - values/common.yaml
+      - values/storage.yaml
+      - values/trigger.yaml
+    labels:
+      default: true
+      component: trigger
+
+  - name: mynavigator
+    namespace: canton
+    chart: charts/daml-navigator
+    values:
+      - values/azure.yaml
+      - values/common.yaml
+      - values/navigator.yaml
+    labels:
+      component: navigator

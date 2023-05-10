@@ -1,0 +1,20 @@
+---
+storage:
+  database: "trigger"
+  user: "trigger"
+  existingSecret:
+    name: "postgresql-roles"
+    key: "trigger"
+
+ledgerAPI:
+  host: "participant1-canton-participant.canton.svc.cluster.local"
+
+resources:
+  requests:
+    cpu: 200m
+  limits:
+    cpu: 1
+    memory: 1Gi
+
+environment:
+  JDK_JAVA_OPTIONS: "-XX:+ExitOnOutOfMemoryError -XX:InitialRAMPercentage=70 -XX:MaxRAMPercentage=70"

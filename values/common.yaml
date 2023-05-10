@@ -1,0 +1,18 @@
+---
+# Specific to canton and daml helm charts
+commonLabels:
+  app.kubernetes.io/owner: "platform-enablement-team"
+
+# Specific to cert-manager chart
+global:
+  commonLabels:
+    app.kubernetes.io/owner: "platform-enablement-team"
+
+# Start Prometheus exporter
+metrics:
+  enabled: true
+  ## TODO - Create PodMonitor or ServiceMonitor for all components
+  #podMonitor:
+  #  enabled: true
+  #serviceMonitor:
+  #  enabled: true

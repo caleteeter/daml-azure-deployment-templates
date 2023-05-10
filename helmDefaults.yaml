@@ -1,0 +1,20 @@
+---
+helmDefaults:
+  # Restores previous state in case of failed release (default false)
+  atomic: true
+  # When true, cleans up any new resources created during a failed release (default false)
+  cleanupOnFail: false
+  # Forces resource update through delete/recreate if needed (default false)
+  force: false
+  # Performs pods restart for the resource if applicable (default false)
+  recreatePods: false
+  # Time in seconds to wait for any individual Kubernetes operation (like Jobs for hooks,
+  # and waits onpod/pvc/svc/deployment readiness) (default 300)
+  timeout: 1500
+  # Verify the chart before upgrading (only works with packaged charts not directories) (default false)
+  verify: false
+  # Wait for Kubernetes resources via --wait (default false)
+  wait: true
+  # If set and --wait enabled, will wait until all Jobs have been completed before marking
+  # the release as successful. It will wait for as long as --timeout (default false)
+  waitForJobs: true

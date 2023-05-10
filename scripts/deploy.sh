@@ -16,11 +16,6 @@ akvName="${12}"
 # login
 az login --identity --username "${managedIdentity}"
 
-# enable akv integration for aks
-az aks enable-addons --addons azure-keyvault-secrets-provider --name $aksClusterName --resource-group $resourceGroupName
-akvSecretClientId=$(az aks show -g $resourceGroupName -n $aksClusterName --query addonProfiles.azureKeyvaultSecretsProvider.identity.clientId -o tsv)
-az keyvault set-policy -n $akvName --secret-permissions all --spn $akvSecretClientId
-
 # get credentials for kubectl used for data plane operations
 az aks install-cli
 az aks get-credentials --name "${aksClusterName}" --resource-group "${resourceGroupName}"
@@ -85,15 +80,26 @@ tar -zxvf canton-participant-0.0.8.tgz -C charts/
 tar -zxvf daml-trigger-0.0.8.tgz -C charts/
 tar -zxvf daml-http-json-0.0.8.tgz -C charts/
 
-# extract helm chart values
-wget -O assets.tar.gz https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/assets/assets.tar.gz
-tar -zxvf assets.tar.gz
+# download helm chart values
+mkdir values
+wget -O values/azure.yaml https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/values/azure.yaml
+wget -O values/common.yaml https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/values/common.yaml
+wget -O values/domain.yaml https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/values/domain.yaml
+wget -O values/http-json.yaml https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/values/http-json.yaml
+wget -O values/navigator.yaml https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/values/navigator.yaml
+wget -O values/participant1.yaml https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/values/participant1.yaml
+wget -O values/participant2.yaml https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/values/participant2.yaml
+wget -O values/storage.yaml https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/values/storage.yaml
+wget -O values/trigger.yaml https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/values/trigger.yaml
+wget -O environments.yaml https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/environments.yaml
+wget -O helmDefaults.yaml https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/helmDefaults.yaml
+wget -O helmfile.yaml https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/helmfile.yaml
 
 # patch dynamic values for helm
 export REGISTRY=${acrName}.azurecr.io
 export HOST=${serverName}.postgres.database.azure.com
-helm replace-values-env -f values/registries/azure.yaml -u
-helm replace-values-env -f values/common/storage.yaml -u
+helm replace-values-env -f values/azure.yaml -u
+helm replace-values-env -f values/storage.yaml -u
 
 # deployment
 helmfile -f helmfile.yaml -l 'default=true' apply --skip-deps 

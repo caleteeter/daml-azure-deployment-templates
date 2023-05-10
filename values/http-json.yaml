@@ -1,0 +1,24 @@
+---
+# https://docs.daml.com/json-api/production-setup.html#scaling-and-redundancy
+# Any number of HTTP JSON API instances talking to the same query store
+replicaCount: 2
+
+storage:
+  database: "json"
+  user: "json"
+  existingSecret:
+    name: "postgresql-roles"
+    key: "json"
+
+ledgerAPI:
+  host: "participant1-canton-participant.canton.svc.cluster.local"
+
+resources:
+  requests:
+    cpu: 200m
+  limits:
+    cpu: 1
+    memory: 1Gi
+
+environment:
+  JDK_JAVA_OPTIONS: "-XX:+ExitOnOutOfMemoryError -XX:InitialRAMPercentage=70 -XX:MaxRAMPercentage=70"
