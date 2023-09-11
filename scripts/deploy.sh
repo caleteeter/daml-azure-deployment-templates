@@ -39,7 +39,7 @@ wget -O postgresql.sql "${artifactsBaseUrl}/scripts/postgresql.sql"
 
 # update tokens in script with real values
 # shellcheck disable=SC2002
-dbPass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+dbPass="xtT1FTKnG7613ac26DdTbORRNfXSMYVO" # $(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 sed -i "s/DB_PASS/${dbPass}/g" postgresql.sql
 sed -i "s/DB_ADMIN/${administratorLogin}/g" postgresql.sql
 
