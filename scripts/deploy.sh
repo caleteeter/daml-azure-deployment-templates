@@ -35,7 +35,7 @@ az config set extension.use_dynamic_install=yes_without_prompt
 apk --no-cache add postgresql-client
 
 # create database objects
-wget -O postgresql.sql $artifactsBaseUrl/scripts/postgresql.sql
+wget -O postgresql.sql "${artifactsBaseUrl}/scripts/postgresql.sql"
 
 # update tokens in script with real values
 # shellcheck disable=SC2002
