@@ -13,7 +13,7 @@ serverName="${9}"
 administratorLogin="${10}"
 administratorLoginPassword="${11}"
 
-artifactsBaseUrl="https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/"
+artifactsBaseUrl="https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main"
 
 # login
 az login --identity --username "${managedIdentity}"
