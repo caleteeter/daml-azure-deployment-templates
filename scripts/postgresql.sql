@@ -18,10 +18,6 @@ CREATE ROLE participant1 WITH PASSWORD 'DB_PASS' LOGIN;
 ALTER ROLE participant1 SET statement_timeout=60000;
 COMMENT ON ROLE participant1 IS 'Canton - Participant role';
 
-CREATE ROLE participant2 WITH PASSWORD 'DB_PASS' LOGIN;
-ALTER ROLE participant2 SET statement_timeout=60000;
-COMMENT ON ROLE participant2 IS 'Canton - Participant role';
-
 GRANT domain TO DB_ADMIN;
 CREATE DATABASE domain OWNER domain;
 COMMENT ON DATABASE domain IS 'Canton - Domain topology manager database';
@@ -57,15 +53,6 @@ GRANT CONNECT ON DATABASE participant1 TO participant1;
 \c participant1
 REVOKE ALL ON schema public FROM public;
 ALTER SCHEMA public OWNER TO participant1;
-
-GRANT participant2 TO DB_ADMIN;
-CREATE DATABASE participant2 OWNER participant2;
-COMMENT ON DATABASE participant2 IS 'Canton - Participant database';
-REVOKE ALL ON DATABASE participant2 FROM public;
-GRANT CONNECT ON DATABASE participant2 TO participant2;
-\c participant2
-REVOKE ALL ON schema public FROM public;
-ALTER SCHEMA public OWNER TO participant2;
 
 -- HTTP JSON API service user and database
 
