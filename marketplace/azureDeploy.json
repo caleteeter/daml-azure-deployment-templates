@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "3907490188554877628"
+      "templateHash": "12815335870124179181"
     }
   },
   "parameters": {
@@ -161,10 +161,19 @@
             "name": "agentpool",
             "count": 3,
             "vmSize": "Standard_D4s_v4",
+            "availabilityZones": [
+              "1",
+              "2",
+              "3"
+            ],
             "mode": "System",
             "vnetSubnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', uniqueString(resourceGroup().id), 'akssubnet')]"
           }
-        ]
+        ],
+        "apiServerAccessProfile": {
+          "enablePrivateCluster": true,
+          "enablePrivateClusterPublicFQDN": false
+        }
       },
       "identity": {
         "type": "UserAssigned",
@@ -204,8 +213,10 @@
         "version": "14",
         "administratorLogin": "[parameters('postgresAdminLogin')]",
         "administratorLoginPassword": "[parameters('postgresAdminPassword')]",
+        "availabilityZone": "3",
         "highAvailability": {
-          "mode": "Disabled"
+          "mode": "ZoneRedundant",
+          "standbyAvailabilityZone": "1"
         },
         "storage": {
           "storageSizeGB": 32
@@ -253,7 +264,7 @@
         },
         "primaryScriptUri": "https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/scripts/deploy.sh",
         "timeout": "PT30M",
-        "cleanupPreference": "OnSuccess",
+        "cleanupPreference": "OnExpiration",
         "azCliVersion": "2.45.0",
         "retentionInterval": "P1D"
       },
