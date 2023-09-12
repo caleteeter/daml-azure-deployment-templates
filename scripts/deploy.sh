@@ -48,3 +48,52 @@ psql "host=${serverName}.postgres.database.azure.com port=5432 dbname=postgres u
 # create resources in k8s
 az aks command invoke --resource-group "${resourceGroupName}" --name "${aksClusterName}" --command "kubectl create namespace canton"
 az aks command invoke --resource-group "${resourceGroupName}" --name "${aksClusterName}" --command "kubectl -n canton create secret generic postgresql-roles --from-literal=domain=${dbPass} --from-literal=json=${dbPass} --from-literal=mediator=${dbPass} --from-literal=participant1=${dbPass} --from-literal=participant2=${dbPass} --from-literal=sequencer=${dbPass} --from-literal=trigger=${dbPass}"
+
+# allow to pull from ACR namespace wide
+acrPassword=$(az acr credential show --resource-group "${resourceGroupName}" --name "${acrName}" --query passwords[0].value --output tsv)
+k8s_secret_name="${acrName}.azurecr.io"
+az aks command invoke --resource-group "${resourceGroupName}" --name "${aksClusterName}" --command "kubectl -n canton create secret docker-registry ${k8s_secret_name} --docker-server=${k8s_secret_name} --docker-username=${acrName} --docker-password=${acrPassword}"
+az aks command invoke --resource-group "${resourceGroupName}" --name "${aksClusterName}" --command "kubectl -n canton patch serviceaccount default -p {\"imagePullSecrets\": [{\"name\": \"${k8s_secret_name}\"}]}"
+
+# install helm
+wget https://get.helm.sh/helm-v3.11.2-linux-amd64.tar.gz
+tar -zxvf helm-v3.11.2-linux-amd64.tar.gz
+cp linux-amd64/helm /usr/local/bin
+
+# install helmfile
+wget https://github.com/helmfile/helmfile/releases/download/v0.154.0/helmfile_0.154.0_linux_amd64.tar.gz
+tar -xvf helmfile_0.154.0_linux_amd64.tar.gz -C /usr/local/bin --totals helmfile
+chmod 755 /usr/local/bin/helmfile
+
+# install plugin for helm replace
+helm plugin install https://github.com/databus23/helm-diff
+helm plugin install https://github.com/infog/helm-replace-values-env
+
+# pull the helm charts
+helm repo add digital-asset https://digital-asset.github.io/daml-helm-charts
+
+# download helm chart values
+mkdir values
+wget -O values/azure.yaml $artifactsBaseUrl/values/azure.yaml
+wget -O values/common.yaml $artifactsBaseUrl/values/common.yaml
+wget -O values/domain.yaml $artifactsBaseUrl/values/domain.yaml
+wget -O values/http-json.yaml $artifactsBaseUrl/values/http-json.yaml
+wget -O values/navigator.yaml $artifactsBaseUrl/values/navigator.yaml
+wget -O values/participant1.yaml $artifactsBaseUrl/values/participant1.yaml
+wget -O values/storage.yaml $artifactsBaseUrl/values/storage.yaml
+wget -O values/trigger.yaml $artifactsBaseUrl/values/trigger.yaml
+wget -O environments.yaml $artifactsBaseUrl/environments.yaml
+wget -O helmDefaults.yaml $artifactsBaseUrl/helmDefaults.yaml
+wget -O helmfile.yaml $artifactsBaseUrl/helmfile.yaml
+
+# patch dynamic values for helm
+export REGISTRY=${acrName}.azurecr.io
+export HOST=${serverName}.postgres.database.azure.com
+helm replace-values-env -f values/azure.yaml -u
+helm replace-values-env -f values/storage.yaml -u
+
+# install the helm charts
+az aks command invoke --resource-group "${resourceGroupName}" --name "${aksClusterName}" --command "helm install canton-domain digital-asset/canton-domain"
+az aks command invoke --resource-group "${resourceGroupName}" --name "${aksClusterName}" --command "helm install canton-participant digital-asset/canton-participant"
+az aks command invoke --resource-group "${resourceGroupName}" --name "${aksClusterName}" --command "helm install daml-http-json digital-asset/daml-http-json"
+az aks command invoke --resource-group "${resourceGroupName}" --name "${aksClusterName}" --command "helm install daml-trigger digital-asset/daml-trigger"
