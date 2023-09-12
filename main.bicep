@@ -140,10 +140,15 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-05-02-preview' = {
         name: 'agentpool'
         count: 3
         vmSize: 'Standard_D4s_v4'
+        availabilityZones: ['1', '2', '3']
         mode: 'System'
         vnetSubnetID: resourceId('Microsoft.Network/virtualNetworks/subnets/', vnet.name, 'akssubnet')
       }
     ]
+    apiServerAccessProfile: {
+      enablePrivateCluster: true
+      enablePrivateClusterPublicFQDN: false
+    }
   }
   identity: {
     type: 'UserAssigned'
@@ -182,8 +187,10 @@ resource server 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-preview' =
     version: '14'
     administratorLogin: postgresAdminLogin
     administratorLoginPassword: postgresAdminPassword
+    availabilityZone: '3'
     highAvailability: {
-      mode: 'Disabled'
+      mode: 'ZoneRedundant'
+      standbyAvailabilityZone: '1'
     }
     storage:{
       storageSizeGB: 32
@@ -222,7 +229,7 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     }
     primaryScriptUri: 'https://raw.githubusercontent.com/caleteeter/daml-azure-deployment-templates/main/scripts/deploy.sh'
     timeout: 'PT30M'
-    cleanupPreference: 'OnSuccess'
+    cleanupPreference: 'OnExpiration'
     azCliVersion: '2.45.0'
     retentionInterval:'P1D'
   }
