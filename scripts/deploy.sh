@@ -47,3 +47,4 @@ psql "host=${serverName}.postgres.database.azure.com port=5432 dbname=postgres u
 
 # create resources in k8s
 az aks command invoke --resource-group "${resourceGroupName}" --name "${aksClusterName}" --command "kubectl create namespace canton"
+az aks command invoke --resource-group "${resourceGroupName}" --name "${aksClusterName}" --command "kubectl -n canton create secret generic postgresql-roles --from-literal=domain=${dbPass} --from-literal=json=${dbPass} --from-literal=mediator=${dbPass} --from-literal=participant1=${dbPass} --from-literal=participant2=${dbPass} --from-literal=sequencer=${dbPass} --from-literal=trigger=${dbPass}"
