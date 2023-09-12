@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+# set -euo pipefail
 
 managedIdentity="${1}"
 resourceGroupName="${2}"
