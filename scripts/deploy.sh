@@ -45,5 +45,12 @@ sed -i "s/DB_ADMIN/${administratorLogin}/g" postgresql.sql
 
 psql "host=${serverName}.postgres.database.azure.com port=5432 dbname=postgres user=${administratorLogin} password=${administratorLoginPassword} sslmode=require" -a -f "postgresql.sql"
 
+# create resources in k8s
 az aks command invoke --resource-group ${resourceGroupName} --name ${aksClusterName} --command "kubectl create namespace canton"
 az aks command invoke --resource-group ${resourceGroupName} --name ${aksClusterName} --command "kubectl -n canton create secret generic postgresql-roles --from-literal=domain=${dbPass} --from-literal=json=${dbPass} --from-literal=mediator=${dbPass} --from-literal=participant1=${dbPass} --from-literal=participant2=${dbPass} --from-literal=sequencer=${dbPass} --from-literal=trigger=${dbPass}"
+
+# allow to pull from ACR namespace wide
+acrPassword=$(az acr credential show --resource-group "${resourceGroupName}" --name "${acrName}" --query passwords[0].value --output tsv)
+k8s_secret_name="${acrName}.azurecr.io"
+az aks command invoke --resource-group ${resourceGroupName} --name ${aksClusterName} --command "kubectl -n canton create secret docker-registry ${k8s_secret_name} --docker-server=${k8s_secret_name} --docker-username=${acrName} --docker-password=${acrPassword}"
+az aks command invoke --resource-group ${resourceGroupName} --name ${aksClusterName} --command "kubectl -n canton patch serviceaccount default -p {\"imagePullSecrets\": [{\"name\": \"${k8s_secret_name}\"}]}"
