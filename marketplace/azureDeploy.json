@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.20.4.51522",
-      "templateHash": "12815335870124179181"
+      "templateHash": "7925182144189900204"
     }
   },
   "parameters": {
@@ -169,11 +169,7 @@
             "mode": "System",
             "vnetSubnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', uniqueString(resourceGroup().id), 'akssubnet')]"
           }
-        ],
-        "apiServerAccessProfile": {
-          "enablePrivateCluster": true,
-          "enablePrivateClusterPublicFQDN": false
-        }
+        ]
       },
       "identity": {
         "type": "UserAssigned",
