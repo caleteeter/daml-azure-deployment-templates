@@ -92,3 +92,9 @@ export REGISTRY=${acrName}.azurecr.io
 export HOST=${serverName}.postgres.database.azure.com
 helm replace-values-env -f values/azure.yaml -u
 helm replace-values-env -f values/storage.yaml -u
+
+# install the helm charts
+helm install canton-domain digital-asset/canton-domain
+helm install canton-participant digital-asset/canton-participant
+helm install daml-http-json digital-asset/daml-http-json
+helm install daml-trigger digital-asset/daml-trigger
