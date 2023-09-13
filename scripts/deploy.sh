@@ -54,3 +54,20 @@ acrPassword=$(az acr credential show --resource-group "${resourceGroupName}" --n
 k8s_secret_name="${acrName}.azurecr.io"
 az aks command invoke --resource-group ${resourceGroupName} --name ${aksClusterName} --command "kubectl -n canton create secret docker-registry ${k8s_secret_name} --docker-server=${k8s_secret_name} --docker-username=${acrName} --docker-password=${acrPassword}"
 az aks command invoke --resource-group ${resourceGroupName} --name ${aksClusterName} --command "kubectl -n canton patch serviceaccount default -p {\"imagePullSecrets\": [{\"name\": \"${k8s_secret_name}\"}]}"
+
+# install helm
+wget https://get.helm.sh/helm-v3.11.2-linux-amd64.tar.gz
+tar -zxvf helm-v3.11.2-linux-amd64.tar.gz
+cp linux-amd64/helm /usr/local/bin
+
+# install helmfile
+wget https://github.com/helmfile/helmfile/releases/download/v0.154.0/helmfile_0.154.0_linux_amd64.tar.gz
+tar -xvf helmfile_0.154.0_linux_amd64.tar.gz -C /usr/local/bin --totals helmfile
+chmod 755 /usr/local/bin/helmfile
+
+# install plugin for helm replace
+helm plugin install https://github.com/databus23/helm-diff
+helm plugin install https://github.com/infog/helm-replace-values-env
+
+# pull the helm charts
+# helm repo add digital-asset https://digital-asset.github.io/daml-helm-charts
