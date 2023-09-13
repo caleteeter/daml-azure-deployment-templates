@@ -145,10 +145,6 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-05-02-preview' = {
         vnetSubnetID: resourceId('Microsoft.Network/virtualNetworks/subnets/', vnet.name, 'akssubnet')
       }
     ]
-    apiServerAccessProfile: {
-      enablePrivateCluster: true
-      enablePrivateClusterPublicFQDN: false
-    }
   }
   identity: {
     type: 'UserAssigned'
