@@ -32,18 +32,6 @@ releases:
       default: true
       component: participant1
 
-  - name: participant2
-    namespace: canton
-    chart: charts/canton-participant
-    values:
-      - values/azure.yaml
-      - values/common.yaml
-      - values/storage.yaml
-      - values/participant2.yaml
-    labels:
-      default: true
-      component: participant2
-
   - name: myjson
     namespace: canton
     chart: charts/daml-http-json

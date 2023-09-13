@@ -70,4 +70,24 @@ helm plugin install https://github.com/databus23/helm-diff
 helm plugin install https://github.com/infog/helm-replace-values-env
 
 # pull the helm charts
-# helm repo add digital-asset https://digital-asset.github.io/daml-helm-charts
+helm repo add digital-asset https://digital-asset.github.io/daml-helm-charts
+
+# download helm chart values
+mkdir values
+wget -O values/azure.yaml $artifactsBaseUrl/values/azure.yaml
+wget -O values/common.yaml $artifactsBaseUrl/values/common.yaml
+wget -O values/domain.yaml $artifactsBaseUrl/values/domain.yaml
+wget -O values/http-json.yaml $artifactsBaseUrl/values/http-json.yaml
+wget -O values/navigator.yaml $artifactsBaseUrl/values/navigator.yaml
+wget -O values/participant1.yaml $artifactsBaseUrl/values/participant1.yaml
+wget -O values/storage.yaml $artifactsBaseUrl/values/storage.yaml
+wget -O values/trigger.yaml $artifactsBaseUrl/values/trigger.yaml
+wget -O environments.yaml $artifactsBaseUrl/environments.yaml
+wget -O helmDefaults.yaml $artifactsBaseUrl/helmDefaults.yaml
+wget -O helmfile.yaml $artifactsBaseUrl/helmfile.yaml
+
+# patch dynamic values for helm
+export REGISTRY=${acrName}.azurecr.io
+export HOST=${serverName}.postgres.database.azure.com
+helm replace-values-env -f values/azure.yaml -u
+helm replace-values-env -f values/storage.yaml -u
