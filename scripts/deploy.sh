@@ -53,7 +53,8 @@ az aks command invoke --resource-group ${resourceGroupName} --name ${aksClusterN
 acrPassword=$(az acr credential show --resource-group "${resourceGroupName}" --name "${acrName}" --query passwords[0].value --output tsv)
 k8s_secret_name="${acrName}.azurecr.io"
 az aks command invoke --resource-group ${resourceGroupName} --name ${aksClusterName} --command "kubectl -n canton create secret docker-registry ${k8s_secret_name} --docker-server=${k8s_secret_name} --docker-username=${acrName} --docker-password=${acrPassword}"
-az aks command invoke --resource-group ${resourceGroupName} --name ${aksClusterName} --command "kubectl -n canton patch serviceaccount default -p {\"imagePullSecrets\": [{\"name\": \"${k8s_secret_name}\"}]}"
+# az aks command invoke --resource-group ${resourceGroupName} --name ${aksClusterName} --command "kubectl -n canton patch serviceaccount default -p {\"imagePullSecrets\": [{\"name\": \"${k8s_secret_name}\"}]}"
+az aks command invoke --resource-group ${resourceGroupName} --name ${aksClusterName} --command 'kubectl -n canton patch serviceaccount default -p "{\"imagePullSecrets\": [{\"name\": \"${k8s_secret_name}\"}]}"'
 
 # install helm
 wget https://get.helm.sh/helm-v3.11.2-linux-amd64.tar.gz
