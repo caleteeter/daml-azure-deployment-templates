@@ -97,4 +97,4 @@ helm replace-values-env -f values/storage.yaml -u
 # helm install canton-domain digital-asset/canton-domain
 # helm install canton-participant digital-asset/canton-participant
 # helm install daml-http-json digital-asset/daml-http-json
-helm install -f values/azure.yaml -f values/common.yaml -f values/storage.yaml values/trigger.yaml daml-trigger digital-asset/daml-trigger
+helm install -f values/azure.yaml -f values/common.yaml -f values/storage.yaml -f values/trigger.yaml daml-trigger digital-asset/daml-trigger
