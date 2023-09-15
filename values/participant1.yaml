@@ -1,14 +1,6 @@
 ---
 console:
   enabled: true
-  resources:
-    requests:
-      cpu: 100m
-    limits:
-      cpu: 1
-      memory: 1Gi
-  environment:
-    JDK_JAVA_OPTIONS: "-XX:InitialRAMPercentage=70 -XX:MaxRAMPercentage=70"
 
 participantName: "participant1"
 
@@ -18,13 +10,3 @@ storage:
   existingSecret:
     name: "postgresql-roles"
     key: "participant1"
-
-resources:
-  requests:
-    cpu: 500m
-  limits:
-    cpu: 2
-    memory: 3Gi
-
-environment:
-  JDK_JAVA_OPTIONS: "-XX:+ExitOnOutOfMemoryError -XX:InitialRAMPercentage=70 -XX:MaxRAMPercentage=70"

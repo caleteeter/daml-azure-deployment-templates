@@ -8,11 +8,11 @@ global:
   commonLabels:
     app.kubernetes.io/owner: "platform-enablement-team"
 
+image:
+  pullPolicy: Always
+
 # Start Prometheus exporter
 metrics:
   enabled: true
-  ## TODO - Create PodMonitor or ServiceMonitor for all components
-  #podMonitor:
-  #  enabled: true
-  #serviceMonitor:
-  #  enabled: true
+  podMonitor:
+    enabled: false
